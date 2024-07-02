@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1>Employee</h1>
+  
+    <ul>
+      {% for x in myemployees %}
+        <li>{{ x.name }}, {{ x.age }}<a href="{% url 'details' x.id %}">Detail</a></li>
+      {% endfor %}
+    </ul>
+
+    <a href="{% url 'add_employee' %}">Add New Employee</a>
+</body>
+</html>
