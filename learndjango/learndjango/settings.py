@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4l-abu8w*^t&)#$p!xgy_m!$9p#727x*f-$e86cto1pg1*@ptl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'employees',
+    'employees.apps.EmployeesConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +75,22 @@ WSGI_APPLICATION = 'learndjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # MySQL engine. Powered by the mysqlclient module.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'employees',
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
