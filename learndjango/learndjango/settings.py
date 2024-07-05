@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'employees.apps.EmployeesConfig',
     'division.apps.DivisionConfig',
+    'project.apps.ProjectConfig',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',

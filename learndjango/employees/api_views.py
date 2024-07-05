@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Employee
 from .serializers import EmployeeSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 
 from rest_framework import viewsets, status
@@ -16,7 +16,6 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
-    @permission_classes([IsAuthenticated])
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -32,10 +31,9 @@ class EmployeeViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        # Check if 'division' is provided in request data
         if 'division' in request.data:
             division_id = request.data['division']
-            instance.division_id = division_id  # Update the division ID
+            instance.division_id = division_id  
             instance.save()
         serializer.save()
         response_data = {
@@ -48,6 +46,13 @@ class EmployeeViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({'message': 'Employee deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    
+    def get_permissions(self):
+        if self.action == 'create':
+            self.permission_classes = [IsAuthenticated]
+        else:
+            self.permission_classes = [AllowAny]
+        return super(EmployeeViewSet, self).get_permissions()
 
 
 # @api_view(['GET'])
