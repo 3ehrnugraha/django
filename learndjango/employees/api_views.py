@@ -1,16 +1,20 @@
-from .serializers import EmployeeSerializer
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from django.db.models import Count
 from .models import Employee
 from .serializers import EmployeeSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Employee, Division
-from .serializers import EmployeeSerializer
+from django.http import JsonResponse
+
+def employee_distribution_by_division(request):
+    data = Employee.objects.values('division__name').annotate(employee_count=Count('id'))
+    return JsonResponse(list(data), safe=False)
+
+def salary_distribution(request):
+    data = Employee.objects.values('salary').annotate(count=Count('id'))
+    return JsonResponse(list(data), safe=False)
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()

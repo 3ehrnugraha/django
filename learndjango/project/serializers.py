@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project
+from .models import Project, Task
 from employees.models import Employee
 
 
@@ -24,3 +24,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         instance.save()
         instance.employees.set(employee_ids)
         return instance
+    
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['id', 'name', 'description', 'start_date', 'due_date', 'status', 'priority', 'created_at', 'updated_at', 'employee', 'project']
+        
